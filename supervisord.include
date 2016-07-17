@@ -1,0 +1,12 @@
+[program:dhcptonats]
+command=/opt/dhcptonats/dhcptonats -natsurl nats://localhost:4222
+user=root
+directory=/opt/dhcptonats
+startretries=10
+startsecs=5
+redirect_stderr=true
+stdout_logfile=/opt/dhcptonats/logs/dhcptonats.log
+stdout_logfile_maxbytes=5MB
+stdout_logfile_backups=10
+
+

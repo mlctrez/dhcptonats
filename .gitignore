@@ -1,1 +1,4 @@
 .idea/
+gopath/
+logs/
+dhcptonats
