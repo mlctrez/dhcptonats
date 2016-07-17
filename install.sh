@@ -1,17 +1,20 @@
 #!/bin/bash
 
-cd /opt/dhcptonats
+# install dhcptonats
 
-mkdir -p /opt/dhcptonats/logs
-ln -sf /opt/dhcptonats/supervisord.include /etc/supervisor/conf.d/dhcptonats.conf
+set -x
 
-mkdir -p /opt/dhcptonats/gopath
-export GOPATH=/opt/dhcptonats/gopath
+export TOP=/opt/dhcptonats
+export PKG=github.com/mlctrez/dhcptonats
 
+mkdir -p $TOP/logs
+mkdir -p $TOP/gopath
+export GOPATH=$TOP/gopath
+go get $PKG
 
-go get github.com/nats-io/nats
-go get github.com/krolaw/dhcp4
+cp $GOPATH/src/$PKG/supervisord.include $TOP
+cp $GOPATH/bin/dhcptonats $TOP
+ln -sf $TOP/supervisord.include /etc/supervisor/conf.d/dhcptonats.conf
 
-go build -o /opt/dhcptonats/dhcptonats main.go
-
-
+supervisorctl reread
+supervisorctl add dhcptonats
