@@ -1,14 +1,14 @@
 package main
 
 import (
-	"github.com/nats-io/nats"
-	"flag"
-	"log"
-	"net"
 	"bytes"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"github.com/krolaw/dhcp4"
+	"github.com/nats-io/nats"
+	"log"
+	"net"
 	"strings"
 )
 
@@ -17,7 +17,7 @@ func main() {
 	natsUrl := flag.String("natsurl", "", "nats server url as in nats://host:port")
 	flag.Parse()
 
-	if (*natsUrl == "") {
+	if *natsUrl == "" {
 		flag.Usage()
 		log.Fatal("missing natsurl paramter")
 	}
