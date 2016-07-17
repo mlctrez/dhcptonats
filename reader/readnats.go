@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"runtime"
 	"encoding/json"
-	"bytes"
 	"flag"
 	"log"
 )
@@ -24,7 +23,7 @@ func main() {
 
 	if (*natsUrl == "") {
 		flag.Usage()
-		log.Fatal("missing natsurl paramter")
+		log.Fatal("-natsurl required")
 	}
 
 	con, err := nats.Connect(*natsUrl)
@@ -33,12 +32,13 @@ func main() {
 		panic(err)
 	}
 
-	con.Subscribe("dhcp", func(msg *nats.Msg) {
+	jcon, err := nats.NewEncodedConn(con, nats.JSON_ENCODER)
+	if err != nil {
+		panic(err)
+	}
 
-		message := &DhcpMessage{}
-		json.NewDecoder(bytes.NewBuffer(msg.Data)).Decode(message)
-
-		str, err := json.MarshalIndent(message, "", " ")
+	jcon.Subscribe("dhcp", func(msg *DhcpMessage) {
+		str, err := json.MarshalIndent(msg, "", " ")
 		if err != nil {
 			fmt.Println("error decoding", err)
 			return
