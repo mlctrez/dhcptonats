@@ -1,12 +1,12 @@
 package main
 
 import (
-	"github.com/nats-io/nats"
-	"fmt"
-	"runtime"
 	"encoding/json"
 	"flag"
+	"fmt"
+	"github.com/nats-io/nats"
 	"log"
+	"runtime"
 )
 
 type DhcpMessage struct {
@@ -21,7 +21,7 @@ func main() {
 	natsUrl := flag.String("natsurl", "", "nats server url as in nats://host:port")
 	flag.Parse()
 
-	if (*natsUrl == "") {
+	if *natsUrl == "" {
 		flag.Usage()
 		log.Fatal("-natsurl required")
 	}
